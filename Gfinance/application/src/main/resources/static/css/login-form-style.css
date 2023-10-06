@@ -1,0 +1,70 @@
+html, body {
+    height: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: solid;
+    border-radius: 5px;
+    min-width: 300px;
+
+}
+
+h1 {
+    color: #93D47D;
+    margin-top: 50px;
+}
+
+
+
+.horizontal-rule {
+    height: 2px;
+    background-color: #93D47D;
+    border: #93D47D solid;
+    width: 75%;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.login-signup-button {
+    margin: 50px;
+    width: 100px;
+}
+
+.login-signup-button:hover {
+    border-color: #93D47D;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-signup-subtext {
+    margin-top: 5%;
+}
+
+a {
+    color: #93D47D;
+}
+
+a:hover {
+    border-color: #93D47D;
+    cursor: pointer;
+    text-decoration: underline;
+}

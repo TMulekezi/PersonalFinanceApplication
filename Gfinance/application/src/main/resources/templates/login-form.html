@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login page</title>
+    <link rel="stylesheet" th:href="@{/css/login-form-style.css}">
+</head>
+<body>
+
+<div class="container">
+    <h1>GFinance</h1>
+    <div class="subtext">Login</div>
+    <div class="horizontal-rule"></div>
+    <form action="" th:action="@{/authenticateTheUser}" method="POST">
+        <div th:if="${param.error}">
+
+            <div>
+                Invalid username and password.
+            </div>
+
+        </div>
+
+        <div th:if="${param.logout}">
+
+            <div>
+                You have been logged out.
+            </div>
+
+        </div>
+
+        <input type="text"  name="username" placeholder="Enter username">
+        <input type="password" name="password" placeholder="Enter password">
+        <button class="login-signup-button">Login</button>
+    </form>
+</div>
+
+<div class="login-signup-subtext">Not a user? Create an account <a th:href="@{/registration/showMyRegistrationPage}">here</a></div>
+
+</body>
+</html>

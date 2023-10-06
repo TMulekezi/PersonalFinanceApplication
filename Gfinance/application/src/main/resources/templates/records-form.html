@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Records</title>
+    <link rel="stylesheet" th:href="@{/css/records-form-style.css}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+    <style>
+        /* Rules for icon sizes: */
+        </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="sidebar">
+
+        <div class="sidebar-header">
+            My Tools
+        </div>
+
+        <a th:href="@{/gfinance/main}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">home</span>
+                Home
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/budgets}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">balance</span>
+                Budgets
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/savings}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">savings</span>
+                Savings
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/reoccurring}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">autorenew</span>
+                Reoccurring
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/investments}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">show_chart</span>
+                Investments
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/achievements}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">emoji_events</span>
+                Achievements
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/records}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">swap_vert</span>
+                Records
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/settings}">
+            <div class="sidebar-option settings">
+                <span class="material-icons md-48">settings</span>
+                Settings
+            </div>
+        </a>
+
+    </div>
+
+
+    <div class="main">
+        <div class="main-header">
+            <h1>GFinance</h1>
+            <div class="main-header-sub-header">Savings</div>
+            <div class="horizontal-rule"></div>
+        </div>
+
+        <div class="main-body">
+            <div class="form">
+                <form action="" th:action="@{/gfinance/processRecordsForm}" th:object="${date}" method="POST">
+                    <div class="record-input">
+                        <label for="day">Day</label>
+                        <input type="date" name="day" id="day" onchange="this.form.submit()" th:field="*{date}">
+                    </div>
+                </form>
+
+                <form action="" th:action="@{/gfinance/processRecordsForm}" th:object="${date}" method="POST">
+                    <div class="record-input">
+                        <label for="week">Week</label>
+                        <input type="week" name="week" id="week" onchange="this.form.submit()" th:field="*{date}">
+                    </div>
+                </form>
+
+                <form action="" th:action="@{/gfinance/processRecordsForm}" th:object="${date}" method="POST">
+                    <div class="record-input">
+                        <label for="month">Month</label>
+                        <input type="month" name="week" id="month" onchange="this.form.submit()" th:field="*{date}">
+                    </div>
+                </form>
+            </div>
+            <div class="drop-list-header">
+                <div class="drop-list-title">Transactions:</div>
+                <a><div class="drop-list-add">+ Add Transaction</div></a>
+            </div>
+            <div class="body">
+
+
+                <form action="" th:action="@{/gfinance/processNewTransaction}" th:object="${transaction}" method="POST">
+
+                    <div class="transaction-form-header">
+                        New Transaction
+                    </div>
+
+                    <div th:if="${#fields.hasErrors('name')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('name')}" th:text="'Field ' + ${err}" />
+                        </ul>
+                    </div>
+
+
+                    <div class="record-input">
+                        <div class="radio-group">
+                            <label for="name">Name: </label>
+                            <input type="text" id="name" th:field="*{name}" required maxlength="30">
+                        </div>
+                    </div>
+
+                    <div th:if="${#fields.hasErrors('expense')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('expense')}" th:text="'Field ' + ${err}" />
+                        </ul>
+                    </div>
+
+
+                    <div class="record-input">
+                        <div class="radio-group">
+                            <label>expense<input type="radio" name="required" th:field="*{expense}" th:value="expense"></label>
+                            <label>income<input type="radio" name="required" th:field="*{expense}" th:value="income"></label>
+                        </div>
+                    </div>
+
+                    <div th:if="${#fields.hasErrors('essential')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('essential')}" th:text="'Field ' + ${err}" />
+                        </ul>
+                    </div>
+
+                    <div class="record-input">
+                        <div class="radio-group">
+                            <label>essential<input type="radio" name="essential" th:field="*{essential}" th:value="essential"></label>
+                            <label>non-essential<input type="radio" name="essential" th:field="*{essential}" th:value="non-essential"></label>
+                        </div>
+                    </div>
+
+                    <div class="record-input">
+                        <label for="options">Type:</label>
+                        <select name="options" id="options" th:field="*{transactionType}">
+                            <option value="bills">bills</option>
+                            <option value="leisure">leisure</option>
+                            <option value="food">food</option>
+                            <option value="transport">transport</option>
+                            <option value="transfer">transfer</option>
+                            <option value="shopping">shopping</option>
+                            <option value="other" selected>other</option>
+                        </select>
+                    </div>
+                    <div th:if="${insufficientFundsError}" >
+                        <div>Insufficient Funds</div>
+                    </div>
+                    <div class="record-input">
+                        <div>
+                            <label for="amount">Amount:</label>
+                            <input type="number" name="amount" id="amount" min="0.01" step="0.01" th:field="*{amount}" max="100000000000">
+                        </div>
+                    </div>
+
+                    <button type="submit">Submit</button>
+                    <a th:href="@{/gfinance/records}"><button type="button">Cancel</button></a>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

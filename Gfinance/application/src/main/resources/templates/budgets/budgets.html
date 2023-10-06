@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Records</title>
+    <link rel="stylesheet" th:href="@{/css/budgets/budgets-style.css}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div class="sidebar">
+
+        <div class="sidebar-header">
+            My Tools
+        </div>
+
+
+        <a th:href="@{/gfinance/main}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">home</span>
+                Home
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/budgets}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">balance</span>
+                Budgets
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/savings}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">savings</span>
+                Savings
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/reoccurring}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">autorenew</span>
+                Reoccurring
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/investments}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">show_chart</span>
+                Investments
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/achievements}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">emoji_events</span>
+                Achievements
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/records}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">swap_vert</span>
+                Records
+            </div>
+        </a>
+
+
+        <a th:href="@{/gfinance/settings}">
+            <div class="sidebar-option settings">
+                <span class="material-icons md-48">settings</span>
+                Settings
+            </div>
+        </a>
+
+    </div>
+
+
+    <div class="main">
+        <div class="main-header">
+            <h1>GFinance</h1>
+            <div class="main-header-sub-header">Budget</div>
+
+            <div class="period-choices">
+                <div class="choice daily">Daily</div>
+                <div class="choice weekly">Weekly</div>
+                <div class="choice monthly">Monthly</div>
+            </div>
+
+            <div class="horizontal-rule"></div>
+        </div>
+
+        <div class="main-body">
+
+            <div class="daily-main period-main" th:classappend="${dayCondition} ? visible : hidden">
+
+                <div class="period-form">
+                    <form action="" th:action="@{/gfinance/processBudgetDay}" th:object="${dateDay}" method="POST">
+                        <label for="date">Date:</label>
+                        <input type="date" name="date" id="date" onchange="this.form.submit()" th:field="*{day}"  placeholder="2023-08-01">
+                    </form>
+                    <div class="errors" th:object="${dateDay}">
+                        <div th:if="${#fields.hasErrors('day')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('day')}" th:text="${err}" />
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:text="${dayDisplay}" class="display"></div>
+
+
+                <div class="stats">
+                    <div class="chart">
+                        <div class="piechart" th:object="${dayArray}">
+                            <div id="piechart1" style="width: 100%; height: 20vw;"></div>
+                            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                            <script type="text/javascript">
+                                google.charts.load('current', {'packages':['corechart']});
+
+
+
+                                function drawChart1() {
+
+                                    var data = google.visualization.arrayToDataTable([
+                                    ['Type', 'Total spent'],
+                                    ['bills',     [[${dayArray[3]}]] ],
+                                    ['leisure',      [[${dayArray[4]}]] ],
+                                    ['transport',  [[${dayArray[5]}]] ],
+                                    ['transfer', [[${dayArray[6]}]] ],
+                                    ['shopping', [[${dayArray[7]}]] ],
+                                    ['food',    [[${dayArray[8]}]] ],
+                                    ['other',    [[${dayArray[9]}]] ]
+                                    ]);
+
+                                    var options = {
+                                    title: 'Expenditure Breakdown'
+                                    };
+
+                                    var chart = new google.visualization.PieChart(document.getElementById('piechart1'));
+
+                                    chart.draw(data, options);
+                                }
+
+
+                            </script>
+                        </div>
+                        <div class="chart-info">
+                            <div class="total-expenditure-daily">
+                                total-expenditure:
+                            </div>
+                            <script type="text/javascript">
+                                const te = document.querySelector(".total-expenditure-daily");
+                                te.textContent = "total-expenditure: $" + [[${dayArray[0]}]].toFixed(2) ;
+                            </script>
+
+                            <div class="breakdown">
+                                <div class="ne-daily">Non-essential:</div>
+                                <div class="e-daily">Essential:</div>
+                            </div>
+
+                            <script type="text/javascript">
+                                const ned = document.querySelector(".ne-daily");
+                                ned.textContent = "Non-essential: $" + [[${dayArray[2]}]].toFixed(2);
+
+                                const ed = document.querySelector(".e-daily");
+                                ed.textContent = "Essential: $" + [[${dayArray[1]}]].toFixed(2);
+                            </script>
+
+                        </div>
+                    </div>
+
+
+                    <div class="budget">
+                        <a th:href="@{/gfinance/showBudgetForm}">
+                            <div class="budget-header">
+                                Budget <span class="material-icons md-48">edit</span>
+                            </div>
+                        </a>
+
+                        <div class="budget-content daily-content">
+                            $100.00
+                        </div>
+
+
+
+                        <div class="budget-info">
+                            The budget can be changed anytime but once a streak is recorded it is set in stone regardless of any changes
+                        </div>
+                    </div>
+
+                    <div class="remaining-budget">
+                        <div class="rb-header">
+                            Remaining budget
+                        </div>
+
+                        <div class="rb-content rb-daily">
+                            $38.67
+                        </div>
+                        <script type="text/javascript">
+                            const dcontent = document.querySelector(".daily-content");
+                            dcontent.textContent = "$" + [[${checking.budget}]].toFixed(2);
+
+                            const rbdaily = document.querySelector(".rb-daily");
+                            rbdaily.textContent = "$" + ([[${checking.budget}]] - [[${dayArray[0]}]]).toFixed(2);
+                        </script>
+                        budgeting tips:
+                        <div class="rb-info">
+                            If you are over budget, consider spending reducing non-essential expenses.
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <div class="weekly-main period-main" th:classappend="${weekCondition} ? visible : hidden">
+                <div class="period-form">
+                    <form action="" th:action="@{/gfinance/processBudgetWeek}" th:object="${dateWeek}" method="POST">
+                        <label for="week">Week:</label>
+                        <input type="week" name="week" id="week" onchange="this.form.submit()" th:field="*{week}" placeholder="2023-W27">
+                        <div class="errors" th:object="${dateWeek}">
+                            <div th:if="${#fields.hasErrors('week')}">
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('week')}" th:text="${err}" />
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+                <div th:text="${weekDisplay}" class="display"></div>
+
+
+                <div class="stats">
+                    <div class="chart">
+                        <div class="piechart" th:object="${weekArray}">
+                            <div id="piechart2" style="width: 100%; height: 20vw;"></div>
+                            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                            <script type="text/javascript">
+                                google.charts.load('current', {'packages':['corechart']});
+
+
+
+                                function drawChart2() {
+
+                                    var data = google.visualization.arrayToDataTable([
+                                    ['Type', 'Total spent'],
+                                    ['bills',     [[${weekArray[3]}]] ],
+                                    ['leisure',      [[${weekArray[4]}]] ],
+                                    ['transport',  [[${weekArray[5]}]] ],
+                                    ['transfer', [[${weekArray[6]}]] ],
+                                    ['shopping', [[${weekArray[7]}]] ],
+                                    ['food',    [[${weekArray[8]}]] ],
+                                    ['other',    [[${weekArray[9]}]] ]
+                                    ]);
+
+                                    var options = {
+                                    title: 'Expenditure Breakdown'
+                                    };
+
+                                    var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
+
+                                    chart.draw(data, options);
+                                }
+
+
+                            </script>
+                        </div>
+                        <div class="chart-info">
+                            <div class="total-expenditure-weekly">
+                                total-expenditure: $25.00
+                            </div>
+                            <script type="text/javascript">
+                                const tew = document.querySelector(".total-expenditure-weekly");
+                                tew.textContent = "total-expenditure: $" + [[${weekArray[0]}]].toFixed(2) ;
+                            </script>
+
+                            <div class="breakdown">
+                                <div class="ne-weekly">Non-essential: $15.00</div>
+                                <div class="e-weekly">Essential: $10.00</div>
+                            </div>
+
+                            <script type="text/javascript">
+                                const newe = document.querySelector(".ne-weekly");
+                                newe.textContent = "Non-essential: $" + [[${weekArray[2]}]].toFixed(2);
+
+                                const ew = document.querySelector(".e-weekly");
+                                ew.textContent = "Essential: $" + [[${weekArray[1]}]].toFixed(2);
+                            </script>
+
+                        </div>
+                    </div>
+
+
+                    <div class="budget">
+                        <a th:href="@{/gfinance/showBudgetForm}">
+                            <div class="budget-header">
+                                Budget <span class="material-icons md-48">edit</span>
+                            </div>
+                        </a>
+
+                        <div class="budget-content weekly-content">
+                            $150.00
+                        </div>
+
+
+                        <div class="budget-info">
+                            The budget can be changed anytime but once a streak is recorded it is set in stone regardless of any changes
+                        </div>
+                    </div>
+
+                    <div class="remaining-budget">
+                        <div class="rb-header">
+                            Remaining budget
+                        </div>
+
+                        <div class="rb-content rb-weekly">
+                            $38.67
+                        </div>
+
+                        <script type="text/javascript">
+                            const wcontent = document.querySelector(".weekly-content");
+                            let weeklyBudget = [[${checking.budget}]] * 7;
+                            wcontent.textContent = "$" + weeklyBudget.toFixed(2);
+
+                            const rbweekly = document.querySelector(".rb-weekly");
+                            rbweekly.textContent = "$" + (weeklyBudget - [[${weekArray[0]}]]).toFixed(2);
+                        </script>
+
+                        budgeting tips:
+                        <div class="rb-info">
+                            If you are over budget, consider spending reducing non-essential expenses.
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="monthly-main period-main" th:classappend="${monthCondition} ? visible : hidden">
+                <div class="period-form">
+                    <form action="" th:action="@{/gfinance/processBudgetMonth}" th:object="${dateMonth}" method="POST">
+                        <label for="month">Month:</label>
+                        <input type="month" name="month" id="month" onchange="this.form.submit()" th:field="*{month}" placeholder="2023-08">
+                    </form>
+                    <div class="errors" th:object="${dateMonth}">
+                        <div th:if="${#fields.hasErrors('month')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('month')}" th:text="${err}" />
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:text="${monthDisplay}" class="display"></div>
+
+
+
+                <div class="stats">
+                    <div class="chart">
+                        <div class="piechart" th:object="${monthArray}">
+                            <div id="piechart3" style="width: 100%; height: 20vw;"></div>
+                            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                            <script type="text/javascript">
+                                google.charts.load('current', {'packages':['corechart']});
+                                google.charts.setOnLoadCallback(drawCharts);
+
+
+                                function drawChart3() {
+
+                                    var data = google.visualization.arrayToDataTable([
+                                    ['Type', 'Total spent'],
+                                    ['bills',     [[${monthArray[3]}]] ],
+                                    ['leisure',      [[${monthArray[4]}]] ],
+                                    ['transport',  [[${monthArray[5]}]] ],
+                                    ['transfer', [[${monthArray[6]}]] ],
+                                    ['shopping', [[${monthArray[7]}]] ],
+                                    ['food',    [[${monthArray[8]}]] ],
+                                    ['other',    [[${monthArray[9]}]] ]
+                                    ]);
+
+                                    var options = {
+                                    title: 'Expenditure Breakdown'
+                                    };
+
+                                    var chart = new google.visualization.PieChart(document.getElementById('piechart3'));
+
+                                    chart.draw(data, options);
+                                }
+
+                                function drawCharts() {
+                                    drawChart1();
+                                    drawChart2();
+                                    drawChart3();
+                                }
+
+                                window.onresize = drawCharts;
+                            </script>
+                        </div>
+                        <div class="chart-info">
+                            <div class="total-expenditure-monthly">
+                                total-expenditure: $25.00
+                            </div>
+                            <script type="text/javascript">
+                                const tem = document.querySelector(".total-expenditure-monthly");
+                                tem.textContent = "total-expenditure: $" + [[${monthArray[0]}]].toFixed(2) ;
+                            </script>
+
+                            <div class="breakdown">
+                                <div class="ne-monthly">Non-essential: $15.00</div>
+                                <div class="e-monthly">Essential: $10.00</div>
+                            </div>
+
+                            <script type="text/javascript">
+                                const nem = document.querySelector(".ne-monthly");
+                                nem.textContent = "Non-essential: $" + [[${monthArray[2]}]].toFixed(2);
+
+                                const em = document.querySelector(".e-monthly");
+                                em.textContent = "Essential: $" + [[${monthArray[1]}]].toFixed(2);
+                            </script>
+
+                        </div>
+                    </div>
+
+
+                    <div class="budget">
+                        <a th:href="@{/gfinance/showBudgetForm}">
+                            <div class="budget-header">
+                                Budget <span class="material-icons md-48">edit</span>
+                            </div>
+                        </a>
+
+                        <div class="budget-content monthly-content">
+                            $200.00
+                        </div>
+
+                        <div class="budget-info">
+                            The budget can be changed anytime but once a streak is recorded it is set in stone regardless of any changes
+                        </div>
+                    </div>
+
+                    <div class="remaining-budget">
+                        <div class="rb-header">
+                            Remaining budget
+                        </div>
+
+                        <div class="rb-content rb-monthly">
+                            $38.67
+                        </div>
+
+                        <script type="text/javascript">
+                            const mcontent = document.querySelector(".monthly-content");
+                            let monthlyBudget = (([[${checking.budget}]] * 7) * 52)/12;
+                            mcontent.textContent = "$" + monthlyBudget.toFixed(2);
+
+                            const rbmonthly = document.querySelector(".rb-monthly");
+                            rbmonthly.textContent = "$" + (monthlyBudget - [[${monthArray[0]}]]).toFixed(2);
+                        </script>
+
+                        budgeting tips:
+                        <div class="rb-info">
+                            If you are over budget, consider spending reducing non-essential expenses.
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+        </div>
+
+        <script>
+            const choices = document.querySelectorAll(".choice");
+            const dailyContent = document.querySelector(".daily-main");
+            const weeklyContent = document.querySelector(".weekly-main");
+            const monthlyContent = document.querySelector(".monthly-main");
+
+            const dailyTab = document.querySelector(".daily");
+            const weeklyTab = document.querySelector(".weekly");
+            const monthlyTab = document.querySelector(".monthly");
+
+            choices.forEach((choice) => {
+                choice.addEventListener("click", () => {
+                    if (choice.textContent == "Daily") {
+                        dailyContent.style.visibility = "visible";
+                        weeklyContent.style.visibility = "hidden";
+                        monthlyContent.style.visibility = "hidden";
+
+                        dailyTab.classList.add("selected");
+                        weeklyTab.classList.remove("selected");
+                        monthlyTab.classList.remove("selected");
+                    } else if (choice.textContent == "Weekly") {
+                        dailyContent.style.visibility = "hidden";
+                        weeklyContent.style.visibility = "visible";
+                        monthlyContent.style.visibility = "hidden";
+
+                        dailyTab.classList.remove("selected");
+                        weeklyTab.classList.add("selected");
+                        monthlyTab.classList.remove("selected");
+                    } else {
+                        dailyContent.style.visibility = "hidden";
+                        weeklyContent.style.visibility = "hidden";
+                        monthlyContent.style.visibility = "visible";
+
+                        dailyTab.classList.remove("selected");
+                        weeklyTab.classList.remove("selected");
+                        monthlyTab.classList.add("selected");
+                    }
+                });
+            });
+
+        </script>
+
+    </div>
+</div>
+
+</body>
+</html>
