@@ -1,0 +1,240 @@
+html, body {
+    height: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
+.container {
+    height: 100%;
+    display: grid;
+    grid-template-columns:1fr 5fr;
+}
+
+
+/* main design */
+
+.main {
+    grid-area: 1/ 2/ 2/ 3;
+    display: grid;
+    grid-template-rows: 1fr 9fr;
+    height: 100vh;
+}
+
+.main-header {
+    grid-area: 1/ 1/ 2/ 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-header h1 {
+    color: #93D47D;
+    font-size: 5vw;
+    margin: 2vw;
+}
+
+.main-header-sub-header {
+    font-size: 3vw;
+    margin-bottom: 10px;
+}
+
+.main .horizontal-rule {
+    height: 2px;
+    background-color: #93D47D;
+    border: #93D47D solid;
+    width: 75%;
+}
+
+.main-body {
+    grid-area: 2/ 1/ 3/ 2;
+    display: grid;
+    grid-template-rows: 15vh 10vh 75vh;
+}
+
+/* savings toolbar maniuplation */
+.savings-tools {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px;
+    font-size: clamp(11px, 1vw, 16px);
+}
+
+
+.savings-manipulation{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.savings-target {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.savings-tools> a {
+    border: #93D47D solid;
+    border-radius: 5px;
+}
+
+.savings-tools> a:hover {
+    border: #93D47D solid;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.manipulation-header, .manipulation-amount {
+    width: fit-content;
+}
+.manipulation-manage-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: #93D47D solid;
+    border-radius: 5px;
+}
+
+.manipulation-manage-button:hover, .arrow:hover {
+    cursor: pointer;
+}
+
+.target-values {
+    position: relative;
+    display: flex;
+    justify-content:center;
+}
+
+
+.daily, .weekly, .monthly {
+    position: absolute;
+}
+
+.daily:hover, .weekly:hover, .monthly:hover {
+    text-decoration: underline blue;
+    cursor:pointer;
+}
+.weekly, .monthly {
+    visibility: hidden;
+}
+
+.target-display {
+    display: flex;
+    align-items: center;
+}
+
+
+
+
+/* body desgin */
+.drop-list-header {
+    grid-area: 2/1/3/2;
+    display: flex;
+    justify-content: space-between;
+    font-size: clamp(10px, 2vw, 24px);
+    align-items: center;
+}
+
+.drop-list-add:hover {
+    cursor: pointer;
+}
+
+.drop-list-title, .drop-list-add {
+    margin: 10px;
+}
+
+.drop-list-add {
+    border: solid #93D47D;
+    border-radius: 5px;
+}
+
+/* body design */
+
+.body {
+    grid-area: 3/1/4/2;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 60px);
+}
+
+.savings-goal {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: solid;
+    border-radius: 5px;
+    height: 48px;
+    font-size: clamp(11px, 1vw, 16px);
+}
+
+.transaction > .material-icons.md-48:hover {
+    cursor: pointer;
+}
+
+
+
+/* sidebar design */
+
+.sidebar {
+    grid-area: 1/ 1/ 2/ 2;
+    background-color: #93d47d56;
+    background-image: linear-gradient(to right,#d1d4d000,#ffffff8c,#ffffff8c,white);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.sidebar-option {
+    display: flex;
+    flex-wrap: wrap;
+    justify-items: center;
+    align-items: center;
+    gap: 0.1vw;
+    margin: 20px 5%;
+    font-size: clamp(10px, 1vw, 24px);
+}
+
+.sidebar-option:hover {
+    background-color: #c7d6c2;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.sidebar-header {
+    font-size: clamp(20px, 2vw, );
+    margin: 30px auto;
+    width: fit-content;
+}
+
+.material-icons.md-48 {
+    font-size: clamp(21px,3vw,48px);
+    font-variation-settings: 'OPSZ' 48;
+    color: #93D47D;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.progress-bar {
+  border: solid #93D47D;
+  border-radius: 10px;
+  padding: 3px;
+    width: 6vw;
+}
+
+.inner-bar {
+  background-color: #93D47D;
+  width: 100%;
+  height: 10px;
+  border-radius: 10px;
+}
+
+.progress {
+display: flex;
+}

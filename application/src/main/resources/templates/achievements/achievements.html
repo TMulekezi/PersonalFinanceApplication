@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Main app</title>
+    <link rel="stylesheet" th:href="@{/css/achievements/achievements-style.css}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+    <style>
+        /* Rules for icon sizes: */
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="sidebar">
+
+        <div class="sidebar-header">
+            My Tools
+        </div>
+
+
+        <a th:href="@{/gfinance/main}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">home</span>
+                Home
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/budgets}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">balance</span>
+                Budgets
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/savings}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">savings</span>
+                Savings
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/reoccurring}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">autorenew</span>
+                Reoccurring
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/investments}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">show_chart</span>
+                Investments
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/achievements}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">emoji_events</span>
+                Achievements
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/records}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">swap_vert</span>
+                Records
+            </div>
+        </a>
+
+
+        <a th:href="@{/gfinance/settings}">
+            <div class="sidebar-option settings">
+                <span class="material-icons md-48">settings</span>
+                Settings
+            </div>
+        </a>
+
+    </div>
+    <div class="main">
+        <div class="main-header">
+            <h1>GFinance</h1>
+            <div class="main-header-sub-header">Achievements</div>
+            <div class="horizontal-rule"></div>
+        </div>
+
+        <div class="main-body">
+
+            <div class="achievements">
+                <div class="achievements-header">Savings achievements:</div>
+                <div class="achievements-body">
+                    <div class="achievement" th:each="achievement: ${savingsAchievements}">
+                        <div class="achievement-info" th:text="'Meet your savings goal for ' + ${achievement.target} + ' consecutive days'"></div>
+                        <span class="material-icons md-48" th:text="${achievement.icon}"></span>
+                        <div class="achievement-description" th:text="${achievement.name}"></div>
+                        <div class="progress-bar" th:title="'Progress: ' + ${achievement.progress} + '/' + ${achievement.target} + ' days'">
+                            <div class="inner-bar" th:style="'width: '+${achievement.progressPercentage}+'%'"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="achievements">
+                <div class="achievements-header">Budget achievements:</div>
+                <div class="achievements-body">
+                    <div class="achievement" th:each="achievement: ${budgetAchievements}">
+                        <div class="achievement-info" th:text="'Meet your budget goal for ' + ${achievement.target} + ' consecutive days'"></div>
+                        <span class="material-icons md-48" th:text="${achievement.icon}"></span>
+                        <div class="achievement-description" th:text="${achievement.name}"></div>
+                        <div class="progress-bar" th:title="'Progress: ' + ${achievement.progress} + '/' + ${achievement.target} + ' days'">
+                            <div class="inner-bar" th:style="'width: '+${achievement.progressPercentage}+'%'"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

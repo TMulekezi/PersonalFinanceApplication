@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Main app</title>
+  <link rel="stylesheet" th:href="@{/css/main-app-style.css}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+  <style>
+        /* Rules for icon sizes: */
+
+        </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="sidebar">
+
+    <div class="sidebar-header">
+      My Tools
+    </div>
+
+    <a th:href="@{/gfinance/main}">
+      <div class="sidebar-option">
+        <span class="material-icons md-48">home</span>
+        Home
+      </div>
+    </a>
+
+    <a th:href="@{/gfinance/budgets}">
+      <div class="sidebar-option">
+        <span class="material-icons md-48">balance</span>
+        Budgets
+      </div>
+    </a>
+
+    <a th:href="@{/gfinance/savings}">
+      <div class="sidebar-option">
+        <span class="material-icons md-48">savings</span>
+        Savings
+      </div>
+    </a>
+
+    <a th:href="@{/gfinance/reoccurring}">
+      <div class="sidebar-option">
+        <span class="material-icons md-48">autorenew</span>
+        Reoccurring
+      </div>
+    </a>
+
+    <a th:href="@{/gfinance/investments}">
+      <div class="sidebar-option">
+        <span class="material-icons md-48">show_chart</span>
+        Investments
+      </div>
+    </a>
+
+    <a th:href="@{/gfinance/achievements}">
+      <div class="sidebar-option">
+        <span class="material-icons md-48">emoji_events</span>
+        Achievements
+      </div>
+    </a>
+
+    <a th:href="@{/gfinance/records}">
+      <div class="sidebar-option">
+        <span class="material-icons md-48">swap_vert</span>
+        Records
+      </div>
+    </a>
+
+
+    <a th:href="@{/gfinance/settings}">
+      <div class="sidebar-option settings">
+        <span class="material-icons md-48">settings</span>
+        Settings
+      </div>
+    </a>
+
+  </div>
+
+
+  <div class="main">
+    <div class="main-header">
+      <h1>GFinance</h1>
+      <div class="main-header-sub-header">Home</div>
+      <div class="balance-summary">
+        <a th:href="@{/gfinance/records}">
+          <div class="balance" title="manage checking account">
+            <span class="material-icons md-48">account_balance_wallet</span>
+            <div>Account Balance:</div>
+            <div class="account-balance">$100</div>
+            <script>
+              const ab = document.querySelector(".account-balance");
+              let num = [[${account.amount}]];
+              num = Math.round((num + Number.EPSILON) * 100) / 100;
+              ab.textContent = "$" + num;
+            </script>
+          </div>
+        </a>
+        <a th:href="@{/gfinance/savings}">
+          <div class="balance" title="manage savings account">
+            <span class="material-icons md-48">savings</span>
+            <div>Savings Balance:</div>
+            <div class="savings-balance">$100</div>
+            <script>
+              const sb = document.querySelector(".savings-balance");
+              let savings = [[${savings.amount}]];
+              savings = Math.round((savings + Number.EPSILON) * 100) / 100;
+              sb.textContent = "$" + savings;
+            </script>
+          </div>
+        </a>
+      </div>
+      <div class="horizontal-rule"></div>
+    </div>
+
+    <div class="main-body">
+        <div class="item">
+          <div class="item-title">Current budget streak</div>
+          <div class="item-content">
+            <span class="material-icons md-48 streak-icon">bolt</span>
+            <div class="streak-info budget">
+              <div class="number" th:text="${budgetStreak.currentStreak}"></div>
+              <div>Days</div>
+            </div>
+          </div>
+          <div class="item-subheader-budget">Record streak:</div>
+          <script>
+            const budgetSub = document.querySelector(".item-subheader-budget");
+            budgetSub.textContent = "Record streak: " + [[${budgetStreak.recordStreak}]];
+          </script>
+        </div>
+
+      <div class="item">
+        <div class="item-title">Current savings streak</div>
+        <div class="item-content">
+          <span class="material-icons md-48 streak-icon">bolt</span>
+          <div class="streak-info savings">
+            <div class="number" th:text="${savingsStreak.currentStreak}"></div>
+            <div>Days</div>
+          </div>
+        </div>
+        <div class="item-subheader-savings">Record streak:</div>
+        <script>
+          const savingsSub = document.querySelector(".item-subheader-savings");
+          savingsSub.textContent = "Record streak: " + [[${savingsStreak.recordStreak}]];
+        </script>
+      </div>
+
+      <a th:href="@{/gfinance/processStreakSubmit}">
+        <div class="item submit">
+          <div class="item-content">
+            <span class="material-icons md-48">attach_money</span>
+          </div>
+          <div>Submit daily spending/saving</div>
+          <div th:if="${error}" style="color:red">Already submitted</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

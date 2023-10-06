@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Savings</title>
+    <link rel="stylesheet" th:href="@{/css/savings-goal-form-style.css}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div class="sidebar">
+
+        <div class="sidebar-header">
+            My Tools
+        </div>
+
+        <a th:href="@{/gfinance/main}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">home</span>
+                Home
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/budgets}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">balance</span>
+                Budgets
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/savings}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">savings</span>
+                Savings
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/reoccurring}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">autorenew</span>
+                Reoccurring
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/investments}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">show_chart</span>
+                Investments
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/achievements}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">emoji_events</span>
+                Achievements
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/records}">
+            <div class="sidebar-option">
+                <span class="material-icons md-48">swap_vert</span>
+                Records
+            </div>
+        </a>
+
+        <a th:href="@{/gfinance/settings}">
+            <div class="sidebar-option settings">
+                <span class="material-icons md-48">settings</span>
+                Settings
+            </div>
+        </a>
+
+    </div>
+
+
+    <div class="main">
+        <div class="main-header">
+            <h1>GFinance</h1>
+            <div class="main-header-sub-header">Savings</div>
+            <div class="horizontal-rule"></div>
+        </div>
+
+        <div class="main-body">
+            <div class="savings-tools">
+
+                <div class="savings-manipulation" th:object="${savingsAccount}">
+                    <div class="manipulation-header">Total($):</div>
+                    <div class="manipulation-amount" th:text="*{amount}"></div>
+                    <a>
+                        <div class="manipulation-manage-button">
+                            <span class="material-icons md-48">swap_horiz</span>
+                            <div>Manage</div>
+                        </div>
+                    </a>
+
+                </div>
+
+
+                <div class="savings-target">
+                    <div>Savings target</div>
+                    <div class="target-display">
+                        <span class="material-icons md-48 left-arrow arrow">chevron_left</span>
+                        <div class="target-header">daily</div>
+                        <span class="material-icons md-48 right-arrow arrow">chevron_right</span>
+                    </div>
+                    <a th:href="@{/gfinance/savingsGoalUpdateForm}">
+                        <div class="target-values" th:href="@{/gfinance/savingsGoalUpdateForm}" th:object="${savingsAccount}">
+                            <div class="daily" title="edit" th:text="*{savings_target}"></div>
+                            <div class="weekly" title="edit"></div>
+                            <div class="monthly" title="edit"></div>
+                        </div>
+                    </a>
+                    <script>
+                        // values displayed
+                        const dailyDiv = document.querySelector(".daily");
+
+                        const dailyAmount = [[${savingsAccount.savings_target}]];
+                        dailyDiv.textContent = "$"+dailyAmount.toFixed(2)
+                        const weeklyAmount = dailyAmount * 7;
+                        const monthlyAmount = (weeklyAmount * 52)/12;
+
+
+                        const weeklyDiv = document.querySelector(".weekly");
+                        weeklyDiv.textContent = "$"+weeklyAmount.toFixed(2);
+                        const monthlyDiv = document.querySelector(".monthly");
+                        monthlyDiv.textContent = "$"+monthlyAmount.toFixed(2);
+
+                        // arrow functionality
+                        const leftArrow = document.querySelector(".left-arrow");
+                        const rightArrow= document.querySelector(".right-arrow");
+
+                        let divs = [dailyDiv, weeklyDiv, monthlyDiv];
+                        let headers = ["daily", "weekly", "monthly"];
+                        const targetHeader = document.querySelector(".target-header");
+
+                        let currentIndex = 0;
+                        leftArrow.addEventListener("click", (e) => {
+                            console.log("here");
+                            const tempIndex = currentIndex;
+                            if (currentIndex -1 <0) {
+                                currentIndex = 2;
+                            } else {
+                                currentIndex --;
+                            }
+
+                            divs[tempIndex].style.visibility = "hidden";
+                            divs[currentIndex].style.visibility ="visible";
+                            targetHeader.textContent = headers[currentIndex];
+                        })
+
+                        rightArrow.addEventListener("click", (e) => {
+                            console.log("here");
+                            const tempIndex = currentIndex;
+                            if (currentIndex +1 > 2) {
+                                currentIndex = 0;
+                            } else {
+                                currentIndex ++;
+                            }
+
+                            divs[tempIndex].style.visibility = "hidden";
+                            divs[currentIndex].style.visibility ="visible";
+                            targetHeader.textContent = headers[currentIndex];
+                        })
+                    </script>
+                </div>
+
+
+            </div>
+            <div class="drop-list-header">
+                <div class="drop-list-title">Savings Goals:</div>
+                <a th:href="@{/gfinance/recordsForm}"><div class="drop-list-add">+ Add savings goal</div></a>
+            </div>
+            <div class="body">
+
+                <form action="" th:action="@{/gfinance/processSavingsTransactionForm}" th:object="${savingsTransaction}" method="POST">
+
+                    <div class="goal-form-header">
+                        New transaction
+                    </div>
+
+                    <div th:if="${#fields.hasErrors('type')}">
+                        <ul>
+                            <li style="color:red" th:each="err : ${#fields.errors('type')}" th:text="'Field ' + ${err}" />
+                        </ul>
+                    </div>
+
+
+                    <div class="record-input">
+                        <div class="radio-group">
+                            <label>Add<input type="radio" name="add" th:field="*{type}" th:value="add"></label>
+                            <label>Withdraw<input type="radio" name="withdraw" th:field="*{type}" th:value="withdraw"></label>
+                        </div>
+                    </div>
+
+                    <div th:if="${savingsError}" >
+                        <div>Insufficient savings funds</div>
+                    </div>
+
+                    <div th:if="${checkingError}" >
+                        <div style="color:red">Insufficient checking funds</div>
+                    </div>
+
+                    <div class="record-input">
+                        <div>
+                            <label for="amount">Amount:</label>
+                            <input type="number" name="amount" id="amount" min="0.01" step="0.01" th:field="*{amount}" max="100000000000">
+                        </div>
+                    </div>
+
+                    <button type="submit">Submit</button>
+                    <a th:href="@{/gfinance/savings}"><button type="button">Cancel</button></a>
+
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Main app</title>
+    <link rel="stylesheet" th:href="@{/css/error-style.css}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+    <style>
+        /* Rules for icon sizes: */
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+
+    <div class="main">
+        <div class="main-header">
+            <h1>GFinance</h1>
+            <div class="horizontal-rule"></div>
+        </div>
+
+        <div class="main-body">
+            <h1>OOPS...</h1>
+            <div>An error occurred. <a th:href="@{/gfinance/main}">Go back to homepage</a></div>
+        </div>
+
+    </div>
+
+
+
+</div>
+</body>
+</html>
